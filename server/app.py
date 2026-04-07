@@ -35,12 +35,8 @@ except Exception as e:  # pragma: no cover
         "openenv is required for the web interface. Install dependencies with '\n    uv sync\n'"
     ) from e
 
-try:
-    from ..models import EmailTriageAction, EmailTriageObservation
-    from .email_triage_env_environment import EmailTriageEnvironment
-except ModuleNotFoundError:
-    from models import EmailTriageAction, EmailTriageObservation
-    from server.email_triage_env_environment import EmailTriageEnvironment
+from models import EmailTriageAction, EmailTriageObservation
+from server.email_triage_env_environment import EmailTriageEnvironment
 
 
 # Create the app with web interface and README integration
