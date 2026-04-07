@@ -1,4 +1,5 @@
 ---
+
 title: Email Triage OpenEnv
 emoji: 🏆
 colorFrom: purple
@@ -6,32 +7,39 @@ colorTo: green
 sdk: docker
 pinned: false
 license: mit
-short_description: Email triage OpenEnv environment for AI agents
----
+short_description: OpenEnv-based email triage environment for classifying and prioritizing emails using FastAPI and Docker.
+---------------------------------------------------------------------------------------------------------------------------
 
 # 📧 Email Triage OpenEnv
 
 This project implements an OpenEnv-compatible environment for email classification and prioritization.
 
+---
+
 ## 🚀 Features
 
-- Classify emails as **important** or **spam**
-- Assign **priority levels** (low, medium, high)
-- Built using **FastAPI**
-- Fully **Dockerized**
-- Deployed on **Hugging Face Spaces**
+* Classify emails as **important** or **spam**
+* Assign **priority levels** (low, medium, high)
+* Built using **FastAPI**
+* Fully **Dockerized**
+* Deployed on **Hugging Face Spaces**
 
 ---
 
 ## 📡 API Endpoints
 
 ### 🔹 Reset Environment
+
 `POST /reset`
 
+---
+
 ### 🔹 Take Action
+
 `POST /step`
 
 Example:
+
 ```json
 {
   "action": {
@@ -42,46 +50,70 @@ Example:
   "timeout_s": 30
 }
 ```
-### Get Tasks
+
+---
+
+### 🔹 Get Tasks
+
 `GET /tasks`
 
-### Grade Performance
+---
+
+### 🔹 Grade Performance
+
 `POST /grader`
 
 Example:
+
 ```json
 {
   "processed": [1, 2, 3, 4, 5]
 }
-
 ```
 
-### Live Demo
+---
+
+## 🌐 Live Demo
+
 👉 https://shrashti21-email-triage-openenv.hf.space/docs
 
+---
 
-### Run Locally (Docker)
+## 🐳 Run Locally (Docker)
+
 ```bash
 docker build -t email-triage .
 docker run -p 8000:8000 email-triage
-
 ```
 
-### Project Structure
+---
+
+## 📁 Project Structure
+
+```
 email_triage_env/
+│
 ├── server/
+│   ├── app.py
+│   └── email_triage_env_environment.py
+│
 ├── models.py
 ├── openenv.yaml
 ├── Dockerfile
 ├── baseline.py
+└── README.md
+```
 
-### Purpose
+---
+
+## 🎯 Purpose
+
 This environment is designed for:
-- Reinforcement Learning agents
-- Email classification tasks
-- Testing agent decision-making
 
-### ✨ Built as part of OpenEnv assessment
+* Reinforcement Learning agents
+* Email classification workflows
+* Testing agent decision-making
 
+---
 
-
+✨ Built as part of OpenEnv assessment
