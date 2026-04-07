@@ -57,7 +57,7 @@ Example:
 ```
 
 ### Live Demo
-# 👉 https://shrashti21-email-triage-openenv.hf.space/docs
+👉 https://shrashti21-email-triage-openenv.hf.space/docs
 
 
 ### Run Locally (Docker)
