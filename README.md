@@ -40,7 +40,7 @@ This project implements an OpenEnv-compatible environment for email classificati
 
 Example:
 
-```json
+```
 {
   "action": {
     "email_id": 1,
@@ -65,7 +65,7 @@ Example:
 
 Example:
 
-```json
+```
 {
   "processed": [1, 2, 3, 4, 5]
 }
@@ -81,7 +81,7 @@ Example:
 
 ## 🐳 Run Locally (Docker)
 
-```bash
+```
 docker build -t email-triage .
 docker run -p 8000:8000 email-triage
 ```
