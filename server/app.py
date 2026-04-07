@@ -52,7 +52,30 @@ app = create_app(
     max_concurrent_envs=1,  # increase this number to allow more concurrent WebSocket sessions
 )
 
+from fastapi import APIRouter
 
+router = APIRouter()
+
+
+@router.get("/tasks")
+def get_tasks():
+    return {
+        "tasks": [
+            {"id": "easy", "description": "Classify 2 emails", "difficulty": "easy"},
+            {"id": "medium", "description": "Classify 3 emails with priority", "difficulty": "medium"},
+            {"id": "hard", "description": "Classify all emails correctly", "difficulty": "hard"},
+        ]
+    }
+
+
+@router.post("/grader")
+def grader(data: dict):
+    processed = data.get("processed", [])
+    score = len(processed) / 5
+    return {"score": round(score, 2)}
+
+
+app.include_router(router)
 def main(host: str = "0.0.0.0", port: int = 8000):
     """
     Entry point for direct execution via uv run or python -m.
@@ -82,3 +105,5 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
     main(port=args.port)
+
+
