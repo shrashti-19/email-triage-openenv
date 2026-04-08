@@ -52,6 +52,9 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
+@app.get("/")
+def home():
+    return {"message": "Email Triage Env is running 🚀"}
 
 @router.get("/tasks")
 def get_tasks():
