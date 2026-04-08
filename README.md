@@ -1,14 +1,12 @@
 ---
-
 title: Email Triage OpenEnv
-emoji: 🏆
-colorFrom: purple
+emoji: 📧
+colorFrom: blue
 colorTo: green
 sdk: docker
-pinned: false
-license: mit
-short_description: OpenEnv-based email triage environment for classifying and prioritizing emails using FastAPI and Docker.
----------------------------------------------------------------------------------------------------------------------------
+app_port: 8000
+short_description: Email triage environment using OpenEnv
+---
 
 # 📧 Email Triage OpenEnv
 
