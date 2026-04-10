@@ -132,6 +132,7 @@ router = APIRouter()
 def home():
     return {"message": "Email Triage Env is running 🚀"}
 
+
 @router.get("/tasks")
 def get_tasks():
     return {
@@ -143,26 +144,30 @@ def get_tasks():
     }
 
 
-@router.post("/grader")
-def grader(data: dict):
-    # Validator may send different formats — handle safely
+@router.post("/grader/easy")
+def grade_easy(data: dict):
     processed = data.get("processed", [])
-
-    # Fallback if processed missing
-    if not isinstance(processed, list):
-        processed = []
-
-    count = len(processed)
-
-    # Stable scoring (always between 0.1 and 0.9)
-    score = 0.2 + (count * 0.1)
-
-    # Clamp strictly inside (0,1)
-    if score >= 1.0:
+    score = (len(processed) + 1) / 4
+    if score >= 1:
         score = 0.9
-    if score <= 0.0:
-        score = 0.1
+    return {"score": round(score, 2)}
 
+
+@router.post("/grader/medium")
+def grade_medium(data: dict):
+    processed = data.get("processed", [])
+    score = (len(processed) + 2) / 6
+    if score >= 1:
+        score = 0.9
+    return {"score": round(score, 2)}
+
+
+@router.post("/grader/hard")
+def grade_hard(data: dict):
+    processed = data.get("processed", [])
+    score = (len(processed) + 3) / 8
+    if score >= 1:
+        score = 0.9
     return {"score": round(score, 2)}
 
 app.include_router(router)
