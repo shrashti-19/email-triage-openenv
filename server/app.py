@@ -186,13 +186,35 @@ def home():
     return {"message": "Email Triage Env is running 🚀"}
 
 
+# @app.get("/tasks")
+# def get_tasks():
+#     return {
+#         "tasks": [
+#             {"id": "easy", "description": "Process at least 2 emails"},
+#             {"id": "medium", "description": "Process at least 3 emails"},
+#             {"id": "hard", "description": "Process all emails correctly"},
+#         ]
+#     }
+
 @app.get("/tasks")
 def get_tasks():
     return {
         "tasks": [
-            {"id": "easy", "description": "Process at least 2 emails"},
-            {"id": "medium", "description": "Process at least 3 emails"},
-            {"id": "hard", "description": "Process all emails correctly"},
+            {
+                "id": "easy",
+                "description": "Process at least 2 emails",
+                "grader": "/grader"
+            },
+            {
+                "id": "medium",
+                "description": "Process at least 3 emails",
+                "grader": "/grader"
+            },
+            {
+                "id": "hard",
+                "description": "Process all emails correctly",
+                "grader": "/grader"
+            },
         ]
     }
 
