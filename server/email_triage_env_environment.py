@@ -19,14 +19,12 @@ class EmailTriageEnvironment(Environment):
         self.emails: List[Email] = []
         self.processed = []
 
-        # ground truth
         self.true_labels = {}
         self.true_priorities = {}
 
     def reset(self) -> EmailTriageObservation:
         self._state = State(episode_id=str(uuid4()), step_count=0)
 
-        # 📩 emails
         self.emails = [
             Email(id=1, subject="Meeting Tomorrow", content="Discuss project", sender="boss@company.com"),
             Email(id=2, subject="Win a free iPhone!!!", content="Click here now", sender="spam@ads.com"),
@@ -35,7 +33,6 @@ class EmailTriageEnvironment(Environment):
             Email(id=5, subject="Security Alert", content="Suspicious login detected", sender="security@bank.com"),
         ]
 
-        # ground truth
         self.true_labels = {
             1: "important",
             2: "spam",
@@ -64,12 +61,11 @@ class EmailTriageEnvironment(Environment):
     def step(self, action: EmailTriageAction) -> EmailTriageObservation:
         self._state.step_count += 1
 
-        # ensure correct type
         email_id = int(action.email_id)
         predicted_label = action.label
         predicted_priority = action.priority
 
-        # 🔥 FIX: ensure ground truth exists (for stateless requests)
+        # fallback (stateless safety)
         if not self.true_labels:
             self.true_labels = {
                 1: "important",
@@ -87,22 +83,23 @@ class EmailTriageEnvironment(Environment):
                 5: "high",
             }
 
-        reward = 0.0
-
         true_label = self.true_labels.get(email_id)
         true_priority = self.true_priorities.get(email_id)
 
-        # 🎯 classification reward
-        if true_label and predicted_label == true_label:
-            reward += 0.6
-        else:
-            reward -= 0.3
+        # ✅ SAFE reward: always between (0,1)
+        reward = 0.2  # base reward
 
-        # 🎯 priority reward
-        if true_priority and predicted_priority == true_priority:
-            reward += 0.4
-        else:
-            reward -= 0.2
+        if predicted_label == true_label:
+            reward += 0.3
+
+        if predicted_priority == true_priority:
+            reward += 0.3
+
+        # Final clamp (VERY IMPORTANT)
+        if reward >= 1.0:
+            reward = 0.9
+        if reward <= 0.0:
+            reward = 0.1
 
         # track processed emails
         if email_id not in self.processed:
@@ -114,7 +111,7 @@ class EmailTriageEnvironment(Environment):
             emails=self.emails,
             processed=self.processed,
             done=done,
-            reward=reward,
+            reward=round(reward, 2),
         )
 
     @property
