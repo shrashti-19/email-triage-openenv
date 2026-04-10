@@ -232,7 +232,7 @@ def grader(data: dict):
 
     else:
         # ✅ FINAL FIX: fallback behaves like valid task
-        score = 0.3 + (count * 0.05)
+        score = 0.33 + (count * 0.06)
         reason = f"Fallback scoring with {count} emails"
 
     # ✅ HARD CLAMP
