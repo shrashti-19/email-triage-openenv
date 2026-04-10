@@ -203,17 +203,17 @@ def get_tasks():
             {
                 "id": "easy",
                 "description": "Process at least 2 emails",
-                "grader": "/grader"
+                "grader": "grader"
             },
             {
                 "id": "medium",
                 "description": "Process at least 3 emails",
-                "grader": "/grader"
+                "grader": "grader"
             },
             {
                 "id": "hard",
                 "description": "Process all emails correctly",
-                "grader": "/grader"
+                "grader": "grader"
             },
         ]
     }
