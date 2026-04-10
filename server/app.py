@@ -46,15 +46,15 @@ def grader(data: dict):
 
     # scoring
     if task_id == "easy":
-        score = count / 5
+        score = (count+1) / 6
         reason = f"Processed {count} emails for easy task"
 
     elif task_id == "medium":
-        score = (count + 1) / 6
+        score = (count + 2) / 7
         reason = f"Processed {count} emails for medium task"
 
     elif task_id == "hard":
-        score = (count + 2) / 7
+        score = (count + 3) / 8
         reason = f"Processed {count} emails for hard task"
 
     else:
