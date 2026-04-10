@@ -17,6 +17,14 @@ app = create_app(
 def home():
     return {"message": "Email Triage Env is running 🚀"}
 
+@app.get("/tasks")
+def get_tasks():
+    return [
+        {"id": "easy"},
+        {"id": "medium"},
+        {"id": "hard"}
+    ]
+
 
 # ✅ ONLY ONE GRADER
 @app.post("/grader")
