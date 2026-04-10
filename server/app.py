@@ -4,7 +4,6 @@ from server.email_triage_env_environment import EmailTriageEnvironment
 
 import uvicorn
 
-# Create app
 app = create_app(
     EmailTriageEnvironment,
     EmailTriageAction,
@@ -19,33 +18,18 @@ def home():
     return {"message": "Email Triage Env is running 🚀"}
 
 
-# ✅ SIMPLE TASKS (NO GRADER FIELD)
-@app.get("/tasks")
-def get_tasks():
-    return {
-        "tasks": [
-            {"id": "easy"},
-            {"id": "medium"},
-            {"id": "hard"}
-        ]
-    }
-
-
-# ✅ SINGLE GRADER ONLY
+# ✅ ONLY ONE GRADER
 @app.post("/grader")
 def grader(data: dict):
-    task_id = data.get("task_id") or "easy"
-
     processed = data.get("processed", [])
     if not isinstance(processed, list):
         processed = []
 
     count = len(processed)
 
-    # ✅ SIMPLE SAFE SCORE
+    # safe score
     score = 0.3 + (count * 0.05)
 
-    # clamp
     if score >= 0.99:
         score = 0.99
     if score <= 0.01:
