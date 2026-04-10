@@ -199,23 +199,20 @@ def home():
 @app.get("/tasks")
 def get_tasks():
     return {
-        "tasks": [
-            {
-                "id": "easy",
+        "tasks": {
+            "easy": {
                 "description": "Process at least 2 emails",
                 "grader": "grader"
             },
-            {
-                "id": "medium",
+            "medium": {
                 "description": "Process at least 3 emails",
                 "grader": "grader"
             },
-            {
-                "id": "hard",
+            "hard": {
                 "description": "Process all emails correctly",
                 "grader": "grader"
-            },
-        ]
+            }
+        }
     }
 
 
