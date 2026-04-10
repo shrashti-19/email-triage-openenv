@@ -138,32 +138,30 @@ def get_tasks():
         "tasks": [
             {"id": "easy"},
             {"id": "medium"},
-            {"id": "hard"},
+            {"id": "hard"}
         ]
     }
 
 
 @router.post("/grader")
 def grader(data: dict):
+    # Validator may send different formats — handle safely
     processed = data.get("processed", [])
+
+    # Fallback if processed missing
+    if not isinstance(processed, list):
+        processed = []
+
     count = len(processed)
 
-    # Infer task based on processed count
-    if count <= 2:
-        # EASY task
-        score = (count + 1) / 4
-    elif count <= 3:
-        # MEDIUM task
-        score = (count + 2) / 6
-    else:
-        # HARD task
-        score = (count + 3) / 8
+    # Stable scoring (always between 0.1 and 0.9)
+    score = 0.2 + (count * 0.1)
 
-    # Ensure strictly between (0,1)
-    if score <= 0:
-        score = 0.1
-    if score >= 1:
+    # Clamp strictly inside (0,1)
+    if score >= 1.0:
         score = 0.9
+    if score <= 0.0:
+        score = 0.1
 
     return {"score": round(score, 2)}
 
