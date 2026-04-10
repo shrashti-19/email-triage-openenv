@@ -65,6 +65,7 @@ Example:
 
 ```
 {
+  "task_id": "easy",
   "processed": [1, 2, 3, 4, 5]
 }
 ```

@@ -34,9 +34,15 @@ def run_baseline():
 
         processed.append(email_id)
 
-    # evaluate
-    grader = requests.post(f"{BASE_URL}/grader", json={"processed": processed})
-    print("Baseline Score:", grader.json())
+    scores = []
+    for task_id in ["easy", "medium", "hard"]:
+        grader = requests.post(
+            f"{BASE_URL}/grader",
+            json={"task_id": task_id, "processed": processed},
+        )
+        scores.append(grader.json().get("score", 0.0))
+
+    print("Baseline Score:", sum(scores) / len(scores))
 
 
 if __name__ == "__main__":

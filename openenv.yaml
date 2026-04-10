@@ -4,4 +4,34 @@ type: space
 runtime: fastapi
 app: server.app:app
 port: 8000
+description: Email triage environment for classifying and prioritizing inbox items.
 
+tasks:
+  - id: easy
+    name: Easy Email Triage
+    description: Classify a small inbox with obvious spam and urgent messages.
+    difficulty: easy
+    grader:
+      module: graders
+      function: grade_task
+  - id: medium
+    name: Medium Email Triage
+    description: Classify a mixed inbox with moderate ambiguity in priority.
+    difficulty: medium
+    grader:
+      module: graders
+      function: grade_task
+  - id: hard
+    name: Hard Email Triage
+    description: Classify a mixed inbox while maintaining accurate priority assignment.
+    difficulty: hard
+    grader:
+      module: graders
+      function: grade_task
+
+grader:
+  module: graders
+  function: grade_task
+
+agent:
+  baseline: inference.py

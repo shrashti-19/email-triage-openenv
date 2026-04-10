@@ -1,4 +1,5 @@
 from openenv.core.env_server.http_server import create_app
+from graders import grade_task
 from models import EmailTriageAction, EmailTriageObservation
 from server.email_triage_env_environment import EmailTriageEnvironment
 
@@ -20,46 +21,27 @@ def home():
 @app.get("/tasks")
 def get_tasks():
     return [
-        {"id": "easy"},
-        {"id": "medium"},
-        {"id": "hard"}
+        {
+            "id": "easy",
+            "name": "Easy Email Triage",
+            "difficulty": "easy",
+        },
+        {
+            "id": "medium",
+            "name": "Medium Email Triage",
+            "difficulty": "medium",
+        },
+        {
+            "id": "hard",
+            "name": "Hard Email Triage",
+            "difficulty": "hard",
+        },
     ]
 
 
-# ✅ ONLY ONE GRADER
 @app.post("/grader")
 def grader(data: dict):
-    task_id = data.get("task_id")
-
-    processed = data.get("processed", [])
-    if not isinstance(processed, list):
-        processed = []
-
-    count = len(processed)
-
-    # ✅ DIFFERENT SCORING PER TASK
-    if task_id == "easy":
-        score = 0.2 + (count * 0.05)
-
-    elif task_id == "medium":
-        score = 0.3 + (count * 0.05)
-
-    elif task_id == "hard":
-        score = 0.4 + (count * 0.05)
-
-    else:
-        score = 0.25  # fallback
-
-    # clamp
-    if score >= 0.99:
-        score = 0.99
-    if score <= 0.01:
-        score = 0.01
-
-    return {
-        "score": round(score, 2),
-        "reason": f"Processed {count} emails for {task_id}"
-    }
+    return grade_task(data)
 
 def main():
     uvicorn.run(app, host="0.0.0.0", port=8000)
