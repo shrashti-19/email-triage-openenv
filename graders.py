@@ -14,8 +14,7 @@ def grade_task(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     processed = payload.get("processed", [])
     if not isinstance(processed, list):
         processed = []
-    score = _compute_score(task_id, processed)
-    return {"score": score, "reason": f"Processed {len(processed)} emails for {task_id}"}
+    return {"score": _compute_score(task_id, processed), "reason": f"Processed {len(processed)} emails for {task_id}"}
 
 
 def grade_easy(payload: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -23,8 +22,7 @@ def grade_easy(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     processed = payload.get("processed", [])
     if not isinstance(processed, list):
         processed = []
-    score = _compute_score("easy", processed)
-    return {"score": score, "reason": f"Processed {len(processed)} emails for easy"}
+    return {"score": _compute_score("easy", processed), "reason": f"Processed {len(processed)} emails for easy"}
 
 
 def grade_medium(payload: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -32,8 +30,7 @@ def grade_medium(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     processed = payload.get("processed", [])
     if not isinstance(processed, list):
         processed = []
-    score = _compute_score("medium", processed)
-    return {"score": score, "reason": f"Processed {len(processed)} emails for medium"}
+    return {"score": _compute_score("medium", processed), "reason": f"Processed {len(processed)} emails for medium"}
 
 
 def grade_hard(payload: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -41,5 +38,4 @@ def grade_hard(payload: dict[str, Any] | None = None) -> dict[str, Any]:
     processed = payload.get("processed", [])
     if not isinstance(processed, list):
         processed = []
-    score = _compute_score("hard", processed)
-    return {"score": score, "reason": f"Processed {len(processed)} emails for hard"}
+    return {"score": _compute_score("hard", processed), "reason": f"Processed {len(processed)} emails for hard"}
