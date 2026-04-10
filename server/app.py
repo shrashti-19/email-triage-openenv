@@ -2,7 +2,6 @@ from openenv.core.env_server.http_server import create_app
 from models import EmailTriageAction, EmailTriageObservation
 from server.email_triage_env_environment import EmailTriageEnvironment
 
-from fastapi import APIRouter
 import uvicorn
 
 # Create FastAPI app
@@ -14,15 +13,15 @@ app = create_app(
     max_concurrent_envs=1,
 )
 
-router = APIRouter()
 
+# ✅ Home
 @app.get("/")
 def home():
     return {"message": "Email Triage Env is running 🚀"}
 
 
-# ✅ TASKS (unchanged but good)
-@router.get("/tasks")
+# ✅ Tasks endpoint
+@app.get("/tasks")
 def get_tasks():
     return {
         "tasks": [
@@ -33,45 +32,38 @@ def get_tasks():
     }
 
 
-# ✅ SAFE HELPERS
-def clamp_score(score: float) -> float:
-    if score >= 1.0:
-        return 0.99
-    if score <= 0.0:
-        return 0.01
-    return round(score, 2)
-
-
-def safe_processed_count(data: dict) -> int:
-    processed = data.get("processed")
-    if not isinstance(processed, list):
-        return 0
-    return len(processed)
-
-
-# ✅ SINGLE GRADER (IMPORTANT FIX)
-@router.post("/grader")
+# ✅ Grader (FINAL FIXED VERSION)
+@app.post("/grader")
 def grader(data: dict):
     task_id = data.get("task_id")
-    count = safe_processed_count(data)
+    processed = data.get("processed")
 
+    # Safe handling
+    if not isinstance(processed, list):
+        count = 0
+    else:
+        count = len(processed)
+
+    # ✅ Ensure score NEVER becomes 0 or 1
     if task_id == "easy":
-        score = count / 5
-
-    elif task_id == "medium":
         score = (count + 1) / 6
 
+    elif task_id == "medium":
+        score = (count + 1) / 7
+
     elif task_id == "hard":
-        score = (count + 2) / 7
+        score = (count + 1) / 8
 
     else:
-        score = 0.1  # fallback safe value
+        score = 0.2  # safe fallback
 
-    return {"score": clamp_score(score)}
+    # ✅ Final clamp (strictly between 0 and 1)
+    if score >= 1.0:
+        score = 0.99
+    if score <= 0.0:
+        score = 0.01
 
-
-# ✅ Register routes
-app.include_router(router)
+    return {"score": round(score, 2)}
 
 
 # ✅ Entry point
