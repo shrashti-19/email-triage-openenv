@@ -33,38 +33,44 @@ def get_tasks():
 
 
 # ✅ Grader (FINAL FIXED VERSION)
-@app.post("/grader")
+@router.post("/grader")
 def grader(data: dict):
     task_id = data.get("task_id")
     processed = data.get("processed")
 
-    # Safe handling
+    # safe handling
     if not isinstance(processed, list):
         count = 0
     else:
         count = len(processed)
 
-    # ✅ Ensure score NEVER becomes 0 or 1
+    # scoring
     if task_id == "easy":
-        score = (count + 1) / 6
+        score = count / 5
+        reason = f"Processed {count} emails for easy task"
 
     elif task_id == "medium":
-        score = (count + 1) / 7
+        score = (count + 1) / 6
+        reason = f"Processed {count} emails for medium task"
 
     elif task_id == "hard":
-        score = (count + 1) / 8
+        score = (count + 2) / 7
+        reason = f"Processed {count} emails for hard task"
 
     else:
-        score = 0.2  # safe fallback
+        score = 0.1
+        reason = "Unknown task"
 
-    # ✅ Final clamp (strictly between 0 and 1)
+    # clamp strictly between (0,1)
     if score >= 1.0:
         score = 0.99
     if score <= 0.0:
         score = 0.01
 
-    return {"score": round(score, 2)}
-
+    return {
+        "score": round(score, 2),
+        "reason": reason
+    }
 
 # ✅ Entry point
 def main():
