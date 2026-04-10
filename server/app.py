@@ -142,10 +142,22 @@ def get_tasks():
         ]
     }
 
+
 @router.post("/grader")
 def grader(data: dict):
     processed = data.get("processed", [])
-    score = len(processed) / 5
+
+    total = 5
+    correct = len(processed)
+
+    score = correct / total
+
+    # Fix: keep score strictly between (0,1)
+    if score <= 0:
+        score = 0.1
+    elif score >= 1:
+        score = 0.9
+
     return {"score": round(score, 2)}
 
 app.include_router(router)
