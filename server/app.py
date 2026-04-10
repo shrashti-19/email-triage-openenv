@@ -136,36 +136,41 @@ def home():
 def get_tasks():
     return {
         "tasks": [
-            {"id": "easy", "description": "Classify 2 emails", "difficulty": "easy"},
-            {"id": "medium", "description": "Classify 3 emails", "difficulty": "medium"},
-            {"id": "hard", "description": "Classify all 5 emails", "difficulty": "hard"},
+            {"id": "easy", "description": "Classify 2 emails"},
+            {"id": "medium", "description": "Classify 3 emails"},
+            {"id": "hard", "description": "Classify all emails"},
         ]
     }
+
+
 
 
 @router.post("/grader")
 def grader(data: dict):
     processed = data.get("processed", [])
-    task_id = data.get("task_id", "easy")  # important
+    task_id = data.get("task_id", "easy")
 
     total = 5
     correct = len(processed)
 
-    # Different scoring per task
+    # Task-specific scoring
     if task_id == "easy":
-        score = correct / 2
+        score = (correct + 1) / (total + 3)   # always between 0 and 1
     elif task_id == "medium":
-        score = correct / 3
-    else:  # hard
-        score = correct / 5
+        score = (correct + 2) / (total + 4)
+    elif task_id == "hard":
+        score = (correct + 3) / (total + 5)
+    else:
+        score = 0.5
 
-    # Clamp to (0,1)
+    # Final safety clamp (VERY IMPORTANT)
     if score <= 0:
         score = 0.1
-    elif score >= 1:
+    if score >= 1:
         score = 0.9
 
     return {"score": round(score, 2)}
+
 
 app.include_router(router)
 
