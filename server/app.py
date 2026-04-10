@@ -33,7 +33,7 @@ def get_tasks():
 
 
 # ✅ Grader (FINAL FIXED VERSION)
-@router.post("/grader")
+@app.post("/grader")
 def grader(data: dict):
     task_id = data.get("task_id")
     processed = data.get("processed")
